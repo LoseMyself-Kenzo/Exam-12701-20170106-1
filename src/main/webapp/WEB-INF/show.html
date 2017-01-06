@@ -1,0 +1,312 @@
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="utf-8">
+<head>
+<title>JS静态分页程序</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script
+		src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script
+		src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style type="text/css">
+body {
+	background: #35393d;
+}
+a:link, a:visited, a:hover, .current, #info {
+	border: 1px solid #DDD;
+	background: #484f58;
+	display: inline-block;
+	margin: 1px;
+	text-decoration: none;
+	font-size: 12px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	color: #AAA;
+	padding: 1px 2px;
+}
+
+a:hover {
+	border: 1px solid #E5E5E5;
+	background: #F9F9F9;
+}
+
+.current {
+	border: 1px solid #E5E5E5;
+	background: #2f363d;
+	margin: 1px;
+	color: whitesmoke;
+}
+
+.current1 {
+	border: 1px solid #E5E5E5;
+	background: #2f363d;
+	margin: 1px;
+	color: whitesmoke;
+}
+
+#info {
+	width: auto;
+}
+
+.controls_ui {
+	width: 300px;
+	margin: 40px auto;
+}
+
+.button {
+	color: #0f1214;
+	text-shadow: 0 1px 0 #484f58;
+	margin-bottom: 20px;
+	margin-right: 5px;
+	border: 1px solid #202124;
+	box-shadow: 0 1px 0 #616a74 inset, 0 1px 5px #212528;
+	background: -webkit-linear-gradient(top, #474d54, #2f363d);
+	background: -moz-linear-gradient(top, #474d54, #2f363d);
+	background: -ms-linear-gradient(top, #474d54, #2f363d);
+	background: -o-linear-gradient(top, #474d54, #2f363d);
+	background: linear-gradient(top, #474d54, #2f363d);
+}
+
+.button:nth-child(3n) {
+	margin-right: 35px;
+}
+
+.button:hover {
+	background: -webkit-linear-gradient(top, #5b6167, #30373e);
+	background: -moz-linear-gradient(top, #5b6167, #30373e);
+	background: -ms-linear-gradient(top, #5b6167, #30373e);
+	background: -o-linear-gradient(top, #5b6167, #30373e);
+	background: linear-gradient(top, #5b6167, #30373e);
+}
+
+.button:active {
+	box-shadow: 0 1px #484c50;
+	background: -webkit-linear-gradient(top, #232930, #3c4249);
+	background: -moz-linear-gradient(top, #232930, #3c4249);
+	background: -ms-linear-gradient(top, #232930, #3c4249);
+	background: -o-linear-gradient(top, #232930, #3c4249);
+	background: linear-gradient(top, #232930, #3c4249);
+}
+
+.round, .square {
+	width: 30px;
+	height: 30px;
+}
+
+.round, .roundbig {
+	border-radius: 15px;
+}
+
+.square, .squarebig {
+	border-radius: 5px;
+}
+
+.button:after {
+	display: block;
+}
+
+.round:nth-of-type(1):after, .square:nth-of-type(4):after {
+	content: "\2716";
+}
+
+.round:nth-of-type(2):after, .square:nth-of-type(5):after {
+	content: "\2714";
+}
+
+.round:nth-of-type(3):after, .square:nth-of-type(6):after {
+	content: "\271a";
+}
+
+.round:nth-of-type(7):after, .square:nth-of-type(10):after {
+	content: "\2717";
+}
+
+.round:nth-of-type(8):after, .square:nth-of-type(11):after {
+	content: "\2713";
+}
+
+.round:nth-of-type(9):after, .square:nth-of-type(12):after {
+	content: "\271d";
+}
+
+.roundbig, .squarebig {
+	width: 80px;
+	height: 30px;
+}
+</style>
+<body>
+
+	<div style="margin-top: 20px">
+		<table>
+			<input type="text" class="col-sm-8 form-control" id="film_id"
+				name="film_id" placeholder="请输入需要查询的电影编号"
+				style="width: 200px; text-align: center; margin-left: 400px">
+				<button type="button" class="button roundbig" id="query"
+					style="margin-left: 10px">查询指定</button>
+			<button type="button" class="button roundbig"
+				name="serach_all_button" style="margin-left: 30px;" id="queryall">查询全部</button>
+			<button type="button" class="button roundbig" name="add_button"
+				onclick=window.location.href="/Exam-12701-20170106-1/toAdd.action">增加</button>
+		</table>
+		<br />
+	</div>
+	<table id="userTable" class="table table-striped" style="color: white;">
+		<thead>
+			<tr style="text-align: center;">
+				<th>Film_id</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Language</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	</div>
+	<script id="rowTemplate" type="application/html">
+		
+	<tr style="color:black;">
+    <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+	    
+	</script>
+	<script>
+    $('document').ready(function () {
+        $('#query').click(function () {
+            query("/Exam-12701-20170106-1/toShowOne.action",{
+                film_id: $('#film_id').val(),
+            });
+        });
+        
+        $('#queryall').click(function () {
+            query("/Exam-12701-20170106-1/toShowAll.action",null,"list");
+        });
+    });
+    window.onload = query ("/Exam-12701-20170106-1/toShowAll.action",null,"list");
+    function query(url,queryInfo,type) {
+    	
+    	if(null!=queryInfo){
+	        var defaultArg = {
+	        	film_id:0,
+	        };
+	        queryInfo = $.extend({}, defaultArg, queryInfo);
+    	}
+        
+        sedRequest(url,queryInfo,type);
+    }
+    
+    function sedRequest(_url,_data,_type){
+    	$.ajax({
+            url: _url,
+            type: "GET",
+            dataType: "json",
+            data: _data,
+            success: function (data) {
+                $('#userTable tbody').empty();
+                if(_type == null){
+               $.each(data, function(i,info){
+            	    if(info.film_id!=null){
+                    var $template = $($('#rowTemplate').html()).clone();
+                    $template.children('td').eq(0).text(info.film_id);
+                    $template.children('td').eq(1).text(info.title);
+                    $template.children('td').eq(2).text(info.description);
+                    $template.children('td').eq(3).text(data.language);
+$template.children('td').eq(4).html("<button type='button' class='button round' onclick=window.location.href='/Exam-12701-20170106-1/toDelete.action?film_id="+info.film_id+"'></button><button type='button' class='button round' onclick=window.location.href='/Exam-12701-20170106-1/edit.html?film_id="+info.film_id+"'></button>");
+                    $('#userTable').append($template);
+            	    }
+                });
+                }else{
+                    $.each(data, function(j,infos){
+                    	var a = infos.language;
+                    $.each(infos,function(i,info){
+                    	if(info.film_id!=null){
+                    	var $template = $($('#rowTemplate').html()).clone();
+                        $template.children('td').eq(0).text(info.film_id);
+                        $template.children('td').eq(1).text(info.title);
+                        $template.children('td').eq(2).text(info.description);
+                        $template.children('td').eq(3).text(a);
+$template.children('td').eq(4).html("<button type='button' class='button round' onclick=window.location.href='/Exam-12701-20170106-1/toDelete.action?film_id="+info.film_id+"'></button><button type='button' class='button round' onclick=window.location.href='/Exam-12701-20170106-1/edit.html?film_id="+info.film_id+"'></button>");
+                        $('#userTable').append($template);
+                    }
+                     
+       		 });  
+         });           
+                    
+         }             
+    }
+    	});    
+    }
+</script>
+	<div id="setpage" style="text-align: center"></div>
+	<script type="text/javascript">
+    <!--
+    var totalpage, pagesize, cpage, count, curcount, outstr;
+    //  总页数       分页大小   当前页面
+    //初始化
+    cpage = 1;
+    totalpage = 56;
+    pagesize = 10;
+    outstr = "";
+    function gotopage(target) {
+        cpage = target;        //把页面计数定位到第几页
+        setpage();
+        //reloadpage(target);    //调用显示页面函数显示第几页,这个功能是用在页面内容用ajax载入的情况
+    }
+    function setpage() {
+        if (totalpage <= 10) {        //总页数小于十页
+            for (count = 1; count <= totalpage; count++) {
+                if (count != cpage) {
+                    outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'>" + count + "</a>";
+                } else {
+                    outstr = outstr + "<span class='current' >" + count + "</span>";
+                }
+            }
+        }
+        if (totalpage > 10) {        //总页数大于十页
+            if (parseInt((cpage - 1) / 10) == 0) {
+                for (count = 1; count <= 10; count++) {
+                    if (count != cpage) {
+                        outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'>" + count + "</a>";
+                    } else {
+                        outstr = outstr + "<span class='current'>" + count + "</span>";
+                    }
+                }
+                outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'> → </a>";
+            }
+            else if (parseInt((cpage - 1) / 10) == parseInt(totalpage / 10)) {
+                outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + (parseInt((cpage - 1) / 10) * 10) + ")'>←</a>";
+                for (count = parseInt(totalpage / 10) * 10 + 1; count <= totalpage; count++) {
+                    if (count != cpage) {
+                        outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'>" + count + "</a>";
+                    } else {
+                        outstr = outstr + "<span class='current'>" + count + "</span>";
+                    }
+                }
+            }
+            else {
+                outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + (parseInt((cpage - 1) / 10) * 10) + ")'>←</a>";
+                for (count = parseInt((cpage - 1) / 10) * 10 + 1; count <= parseInt((cpage - 1) / 10) * 10 + 10; count++) {
+                    if (count != cpage) {
+                        outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'>" + count + "</a>";
+                    } else {
+                        outstr = outstr + "<span class='current'>" + count + "</span>";
+                    }
+                }
+                outstr = outstr + "<a href='javascript:void(0)' onclick='gotopage(" + count + ")'> → </a>";
+            }
+        }
+        document.getElementById("setpage").innerHTML = "<div id='setpage'><span id='info'>共" + totalpage + "页|第" + cpage + "页<\/span>" + outstr + "<\/div>";
+        outstr = "";
+    }
+    setpage();    //调用分页
+    //-->
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html public "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="utf-8">
+<head>
+<meta charset="UTF-8">
+	<title>增加信息</title> <script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		$('document').ready(function() {
+			alert("信息不可为空,请重新填写");
+		});
+	</script>
+</head>
+<body>
+	<h2>当前正在新增电影信息.</h2>
+	</br>
+	<body>
+		新增信息
+		<form action="/Exam-12701-20170106-1/add.action">
+			<table border="1">
+				<tr>
+					<td>title</td>
+					<td>description</td>
+					<td>language</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="title"></td>
+					<td><input type="text" name="description"></td>
+					<td><select name="language">
+							<option>English</option>
+							<option>Italian</option>
+							<option>Japanese</option>
+							<option>Mandarin</option>
+							<option>French</option>
+							<option>German</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td colspan="3"><button type="submit">新增</button></td>
+				</tr>
+			</table>
+		</form>
+		若新增结束请点击返回回到功能菜单
+		</br>
+		<a href="/Exam-12701-20170106-1/toShow.action">返回</a>
+	</body>
+</body>
+</html>
